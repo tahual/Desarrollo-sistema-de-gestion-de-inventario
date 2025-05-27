@@ -9,6 +9,8 @@ public class GestorDeInventariosApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GestorDeInventariosApplication.class, args);
                 
+                
+                
                
 	}
 

@@ -2,18 +2,19 @@
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <persistence-unit name="miumg.edu.gt.GestiondeInventarios_gestor_de_inventarios_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>miumgedu.gt.db.Pedido</class>
-    <class>miumgedu.gt.db.Factura</class>
-    <class>miumgedu.gt.db.Cliente</class>
-    <class>miumgedu.gt.db.Proveedor</class>
-    <class>miumgedu.gt.db.Ordencompra</class>
-    <class>miumgedu.gt.db.Usuario</class>
-    <class>miumgedu.gt.db.Producto</class>
-    <class>miumgedu.gt.db.Venta</class>
-    <class>miumgedu.gt.db.Reporte</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Usuario</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Venta</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Reporte</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.ProveedorProducto</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Proveedor</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Producto</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Pedido</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Ordencompra</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Factura</class>
+    <class>miumg.edu.gt.gestor_de_inventarios.entity.Cliente</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
-      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>operty name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.password" value="Dany5000"/>
     </properties>
