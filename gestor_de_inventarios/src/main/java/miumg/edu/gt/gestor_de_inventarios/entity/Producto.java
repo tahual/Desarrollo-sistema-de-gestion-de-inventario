@@ -23,6 +23,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,44 +39,54 @@ import java.util.List;
     @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion"),
     @NamedQuery(name = "Producto.findByPrecio", query = "SELECT p FROM Producto p WHERE p.precio = :precio"),
     @NamedQuery(name = "Producto.findByStock", query = "SELECT p FROM Producto p WHERE p.stock = :stock"),
-    @NamedQuery(name = "Producto.findByStockminimo", query = "SELECT p FROM Producto p WHERE p.stockminimo = :stockminimo")})
+    @NamedQuery(name = "Producto.findByStockminimo", query = "SELECT p FROM Producto p WHERE p.stockminimo = :stockminimo")
+})
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idproducto", nullable = false)
     private Integer idproducto;
+
     @Basic(optional = false)
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
+
     @Column(name = "descripcion", length = 2147483647)
     private String descripcion;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Basic(optional = false)
     @Column(name = "precio", nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
+
     @Basic(optional = false)
     @Column(name = "stock", nullable = false)
     private int stock;
+
     @Basic(optional = false)
     @Column(name = "stockminimo", nullable = false)
     private int stockminimo;
-    @JoinTable(name = "proveedorproducto", joinColumns = {
-        @JoinColumn(name = "idproducto", referencedColumnName = "idproducto", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor", nullable = false)})
-    @ManyToMany
-    private List<Proveedor> proveedorList;
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProveedorProducto> proveedorProductoList = new ArrayList<>();
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
-    private List<Factura> facturaList;
+    private List<Factura> facturaList = new ArrayList<>();
+
     @OneToMany(mappedBy = "idproducto")
-    private List<Ordencompra> ordencompraList;
+    private List<Ordencompra> ordencompraList = new ArrayList<>();
+
     @OneToMany(mappedBy = "idproducto")
-    private List<Pedido> pedidoList;
-    @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
+    private List<Pedido> pedidoList = new ArrayList<>();
+
     @ManyToOne
+    @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     private Usuario idusuario;
+
+    // ===================== Constructores =====================
 
     public Producto() {
     }
@@ -91,6 +102,8 @@ public class Producto implements Serializable {
         this.stock = stock;
         this.stockminimo = stockminimo;
     }
+
+    // ===================== Getters y Setters =====================
 
     public Integer getIdproducto() {
         return idproducto;
@@ -140,12 +153,12 @@ public class Producto implements Serializable {
         this.stockminimo = stockminimo;
     }
 
-    public List<Proveedor> getProveedorList() {
-        return proveedorList;
+    public List<ProveedorProducto> getProveedorProductoList() {
+        return proveedorProductoList;
     }
 
-    public void setProveedorList(List<Proveedor> proveedorList) {
-        this.proveedorList = proveedorList;
+    public void setProveedorProductoList(List<ProveedorProducto> proveedorProductoList) {
+        this.proveedorProductoList = proveedorProductoList;
     }
 
     public List<Factura> getFacturaList() {
@@ -180,6 +193,8 @@ public class Producto implements Serializable {
         this.idusuario = idusuario;
     }
 
+    // ===================== Métodos adicionales =====================
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -189,20 +204,16 @@ public class Producto implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Producto)) {
             return false;
         }
         Producto other = (Producto) object;
-        if ((this.idproducto == null && other.idproducto != null) || (this.idproducto != null && !this.idproducto.equals(other.idproducto))) {
-            return false;
-        }
-        return true;
+        return (this.idproducto != null || other.idproducto == null) &&
+               (this.idproducto == null || this.idproducto.equals(other.idproducto));
     }
 
     @Override
     public String toString() {
-        return "miumgedu.gt.db.Producto[ idproducto=" + idproducto + " ]";
+        return "miumg.edu.gt.gestor_de_inventario.entity.Producto[ idproducto=" + idproducto + " ]";
     }
-    
 }

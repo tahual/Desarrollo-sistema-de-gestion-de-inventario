@@ -4,18 +4,18 @@
  */
 package miumg.edu.gt.gestor_de_inventarios.entity;
 
-import miumg.edu.gt.gestor_de_inventarios.entity.Usuario;
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
@@ -30,25 +30,31 @@ import java.util.List;
     @NamedQuery(name = "Proveedor.findAll", query = "SELECT p FROM Proveedor p"),
     @NamedQuery(name = "Proveedor.findByIdproveedor", query = "SELECT p FROM Proveedor p WHERE p.idproveedor = :idproveedor"),
     @NamedQuery(name = "Proveedor.findByNombre", query = "SELECT p FROM Proveedor p WHERE p.nombre = :nombre"),
-    @NamedQuery(name = "Proveedor.findByContacto", query = "SELECT p FROM Proveedor p WHERE p.contacto = :contacto")})
+    @NamedQuery(name = "Proveedor.findByContacto", query = "SELECT p FROM Proveedor p WHERE p.contacto = :contacto")
+})
 public class Proveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idproveedor", nullable = false)
     private Integer idproveedor;
+
     @Basic(optional = false)
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
+
     @Basic(optional = false)
     @Column(name = "contacto", nullable = false, length = 100)
     private String contacto;
-    @ManyToMany(mappedBy = "proveedorList")
-    private List<Producto> productoList;
-    @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
+
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProveedorProducto> proveedorProductoList;
+
     @ManyToOne
+    @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     private Usuario idusuario;
 
     public Proveedor() {
@@ -88,12 +94,12 @@ public class Proveedor implements Serializable {
         this.contacto = contacto;
     }
 
-    public List<Producto> getProductoList() {
-        return productoList;
+    public List<ProveedorProducto> getProveedorProductoList() {
+        return proveedorProductoList;
     }
 
-    public void setProductoList(List<Producto> productoList) {
-        this.productoList = productoList;
+    public void setProveedorProductoList(List<ProveedorProducto> proveedorProductoList) {
+        this.proveedorProductoList = proveedorProductoList;
     }
 
     public Usuario getIdusuario() {
@@ -113,20 +119,16 @@ public class Proveedor implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Proveedor)) {
             return false;
         }
         Proveedor other = (Proveedor) object;
-        if ((this.idproveedor == null && other.idproveedor != null) || (this.idproveedor != null && !this.idproveedor.equals(other.idproveedor))) {
-            return false;
-        }
-        return true;
+        return (this.idproveedor != null || other.idproveedor == null) &&
+               (this.idproveedor == null || this.idproveedor.equals(other.idproveedor));
     }
 
     @Override
     public String toString() {
-        return "miumgedu.gt.db.Proveedor[ idproveedor=" + idproveedor + " ]";
+        return "Proveedor[ idproveedor=" + idproveedor + " ]";
     }
-    
 }

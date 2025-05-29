@@ -5,17 +5,15 @@
 package miumg.edu.gt.gestor_de_inventarios.service;
 
 import java.util.List;
-import miumg.edu.gt.gestor_de_inventarios.entity.Ordencompra;
-
-
+import miumg.edu.gt.gestor_de_inventarios.entity.Producto;
 
 /**
  *
  * @author danyt
  */
-public interface OrdencompraService {
-    List<Ordencompra> findAll();
-    Ordencompra findById(Integer id);
-    Ordencompra save(Ordencompra orden);
+public interface ProductoService {
+    List<Producto> findAll();
+    Producto findById(Integer id);
+    Producto save(Producto producto);
     void delete(Integer id);
 }

@@ -4,13 +4,16 @@
  */
 package miumg.edu.gt.gestor_de_inventarios.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.util.Objects;
+
 
 
 
@@ -19,26 +22,49 @@ import java.util.Objects;
  * @author danyt
  */
 @Entity
-@IdClass(ProveedorProducto.ProveedorProductoId.class)
+@Table(name = "proveedor_producto", catalog = "Inventario", schema = "gestion_inventario")
 public class ProveedorProducto implements Serializable {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "idProveedor")
-    private Proveedor proveedor;
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "idProducto")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_proveedor_producto")
+    private Integer idProveedorProducto;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idproducto", referencedColumnName = "idproducto")
     private Producto producto;
 
-    // Getters y Setters
-    public Proveedor getProveedor() {
-        return proveedor;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idproveedor", referencedColumnName = "idproveedor")
+    private Proveedor proveedor;
+
+    // Opcional: campos adicionales
+    @Column(name = "precio_negociado")
+    private Double precioNegociado;
+
+    @Column(name = "cantidad_disponible")
+    private Integer cantidadDisponible;
+
+    // ===================== Constructores =====================
+
+    public ProveedorProducto() {
     }
 
-    public void setProveedor(Proveedor proveedor) {
+    public ProveedorProducto(Producto producto, Proveedor proveedor) {
+        this.producto = producto;
         this.proveedor = proveedor;
+    }
+
+    // ===================== Getters y Setters =====================
+
+    public Integer getIdProveedorProducto() {
+        return idProveedorProducto;
+    }
+
+    public void setIdProveedorProducto(Integer idProveedorProducto) {
+        this.idProveedorProducto = idProveedorProducto;
     }
 
     public Producto getProducto() {
@@ -49,31 +75,51 @@ public class ProveedorProducto implements Serializable {
         this.producto = producto;
     }
 
-    // Clase ID compuesta
-    public static class ProveedorProductoId implements Serializable {
-        private int proveedor;
-        private int producto;
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
 
-        public ProveedorProductoId() {
-        }
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
 
-        public ProveedorProductoId(int proveedor, int producto) {
-            this.proveedor = proveedor;
-            this.producto = producto;
-        }
+    public Double getPrecioNegociado() {
+        return precioNegociado;
+    }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof ProveedorProductoId)) return false;
-            ProveedorProductoId that = (ProveedorProductoId) o;
-            return proveedor == that.proveedor &&
-                   producto == that.producto;
-        }
+    public void setPrecioNegociado(Double precioNegociado) {
+        this.precioNegociado = precioNegociado;
+    }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(proveedor, producto);
+    public Integer getCantidadDisponible() {
+        return cantidadDisponible;
+    }
+
+    public void setCantidadDisponible(Integer cantidadDisponible) {
+        this.cantidadDisponible = cantidadDisponible;
+    }
+
+    // ===================== Métodos utilitarios =====================
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idProveedorProducto != null ? idProveedorProducto.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof ProveedorProducto)) {
+            return false;
         }
+        ProveedorProducto other = (ProveedorProducto) object;
+        return (this.idProveedorProducto != null || other.idProveedorProducto == null) &&
+               (this.idProveedorProducto == null || this.idProveedorProducto.equals(other.idProveedorProducto));
+    }
+
+    @Override
+    public String toString() {
+        return "ProveedorProducto[ id=" + idProveedorProducto + " ]";
     }
 }

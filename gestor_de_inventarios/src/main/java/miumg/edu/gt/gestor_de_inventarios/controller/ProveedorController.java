@@ -1,0 +1,58 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package miumg.edu.gt.gestor_de_inventarios.controller;
+
+import java.util.List;
+import miumg.edu.gt.gestor_de_inventarios.entity.Proveedor;
+import miumg.edu.gt.gestor_de_inventarios.service.ProveedorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ *
+ * @author danyt
+ */
+@RestController
+@RequestMapping("/api/proveedores")
+@CrossOrigin(origins = "*")
+public class ProveedorController {
+
+    @Autowired
+    private ProveedorService proveedorService;
+
+    @GetMapping
+    public List<Proveedor> getAllProveedores() {
+        return proveedorService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Proveedor getProveedorById(@PathVariable Integer id) {
+        return proveedorService.findById(id);
+    }
+
+    @PostMapping
+    public Proveedor createProveedor(@RequestBody Proveedor proveedor) {
+        return proveedorService.save(proveedor);
+    }
+
+    @PutMapping("/{id}")
+    public Proveedor updateProveedor(@PathVariable Integer id, @RequestBody Proveedor proveedor) {
+        proveedor.setIdproveedor(id);
+        return proveedorService.save(proveedor);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProveedor(@PathVariable Integer id) {
+        proveedorService.delete(id);
+    }
+}
